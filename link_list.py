@@ -117,7 +117,7 @@ class Link:
         if current_node is None:
             return 0
         
-        # while we have not reached the tail and 1 to length 
+        # while we have not reached the tail add 1 to length 
         while current_node.next_node:
             length += 1
             current_node =  current_node.next_node
@@ -133,19 +133,7 @@ class Link:
         return: the integer value of the total member of a linked list
         """
         # the starting node (i.e head)
-        current_node = self.head 
-        length = 1
-        
-        # if there is no node on the linkedlist
-        if current_node is None:
-            return 0
-        
-        # while we have not reached the tail and 1 to length 
-        while current_node.next_node:
-            length += 1
-            current_node =  current_node.next_node
-        
-        return length
+        return self.__len__(self)
     
     # the iterator
     def __iter__(self):
@@ -369,10 +357,86 @@ class Link:
             current_node = current_node.next_node
             
         return "->".join(nodes)
+
+    def sort(self, order="ASC"):
+        the_list = self
+        length = len(the_list)
+
+        if length <=1:
+            return the_list
     
-   
+        left, right, length = self._split(the_list, length)
+        if length % 2 !=0:
+            length += 1 
+            
+        left = self.sort(the_list)
+        right = self.sort(the_list)
+
+        return self._merge(left, right, order)
+
+    def _split(self, the_list, length):
+         
+        mid = length//2
+        left = Link()
+        right = Link()
+        position = 1
+        rposition = mid + 1
+        current_node = the_list.head 
+        while position <=  mid:
+            left.postpend(current_node)
+            current_node = current_node.next_node
+            position +=1
         
- 
+        while rposition <=  length:
+            right.postpend(current_node)
+            current_node = current_node.next_node
+            rposition +=1
+
+        if length > rposition:
+            right.postpend(current_node.next_node)
+
+        return left, right, mid
+
+    def _merge(self, left, right, order):
+        order = order
+        l =  Link()
+        i = 0
+        j = 0
+        while i < len(left) and j < len(right):
+            if left[i] < right[j]:
+                if order == "ASC":
+                    l.postpend(left[i])
+                    i +=1
+                else:
+                    l.prepend(left[i])
+                    i +=1
+            else:
+                if order == "ASC":
+                    l.postpend(right[j])
+                    j +=1
+                else:
+                    l.prepend(right[j])
+                    j +=1
+
+        while i < len(left):
+            if order == "ASC":
+                l.postpend(left[i])
+                i +=1
+            else:
+                l.prepend(left[i])
+                i +=1
+        while j < len(right):
+            if order == "ASC":
+                l.postpend(right[j])
+                j +=1
+            else:
+                l.prepend(right[j])
+                j +=1
+        
+        return l
+
+    
+
 
 """
 YOU CAN PLAY WITH THE LINK LIST CLASS BY PLAYING WITH IS METHODS LIKE:
@@ -399,16 +463,24 @@ FOR EXAMPLE RUN THE FOLLOWING LINES OF CODE
 l = Link() # instatiate the link list
 
   
-l.prepend(3)     
-l.prepend(4)
+l.postpend(3)     
+l.postpend(4)
 l.postpend(2)
-l.insert(9, 1)
-l.prepend(5)
-l.prepend(6)
+# l.insert(9, 1)
 
-print(l.index_of(2))
+# l.insert(9, 1)
+print(l.sort())
 
-print(l)
+
+# for x in l:
+#     print(x)
+# print('-------')
+# print(l.index_of(2))
+
+# print(l)
+
+
+
 
 
 
