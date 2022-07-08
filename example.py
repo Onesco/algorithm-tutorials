@@ -5,7 +5,6 @@ class Node:
         self.key = key
         self.left = None
         self.right = None
-        
 
 
 def tuple_2_tree(data):
