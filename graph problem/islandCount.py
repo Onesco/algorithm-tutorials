@@ -65,3 +65,49 @@ module.exports = {
 };
 
 '''
+
+grid = [
+  ['W', 'L', 'W', 'W', 'W'],
+  ['W', 'L', 'W', 'W', 'W'],
+  ['W', 'W', 'W', 'L', 'W'],
+  ['W', 'W', 'L', 'W', 'W'],
+  ['L', 'W', 'W', 'L', 'L'],
+  ['L', 'L', 'W', 'W', 'W'],
+];
+
+
+
+def Island_count(grid):
+    count = 0
+    is_visited = set()
+    for r in range(len(grid)):
+        for c in range(len(grid[0])):
+            if exploreGrid(grid, r, c, is_visited):
+                count += 1
+    return count
+
+
+
+def exploreGrid(grid, r, c, is_visited):
+    # print(r, c)
+    col_boundries = 0 <= c & c < len(grid[0])
+    row_boundries = 0 <= r & r < len(grid)
+
+    if (not col_boundries or not row_boundries):
+        return False
+
+    pos = f"{r},{c}"
+    if pos in is_visited:
+        return False
+    is_visited.add(pos)
+
+    if grid[r][c] =='W':
+        return False
+
+    exploreGrid(grid, r, c+1 , is_visited)
+    exploreGrid(grid, r, c - 1, is_visited)
+    exploreGrid(grid, r-1, c, is_visited)
+    exploreGrid(grid, r + 1, c, is_visited)
+
+    return True
+
